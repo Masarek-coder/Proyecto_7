@@ -212,23 +212,29 @@ if manufacturer_1 and manufacturer_2 and manufacturer_1 != manufacturer_2:
     ]
 
     # 2. Crear el Box Plot (Diagrama de Caja) para la comparación de precios
-    fig_compare = px.box(
+    fig_compare = px.violin(
         df_compare,
         x="manufacturer",
         y="price",
         color="manufacturer",
-        title=f'Comparación de Distribución de Precios: {manufacturer_1.upper()} vs {manufacturer_2.upper()}',
+        box=True,  # Mostrar también el diagrama de caja dentro del violín
+        title=f'Comparación de Distribución de Precios (Diagrama de Violín): {manufacturer_1.upper()} vs {manufacturer_2.upper()}',
         labels={'manufacturer': 'Fabricante', 'price': 'Precio (USD)'},
         template='plotly_white',
         height=500
     )
 
+    # Mostrar la línea de la media para mayor claridad
+    fig_compare.update_traces(meanline_visible=True)
+
     # 3. Mostrar el gráfico
     st.plotly_chart(fig_compare, use_container_width=True)
 
     st.write(
-        f'El diagrama de caja compara la distribución de precios. Puedes ver la mediana (línea central), '
-        f'el rango intercuartílico (la caja) y los valores atípicos (puntos) para {manufacturer_1.upper()} y {manufacturer_2.upper()}.'
+        f'El **Diagrama de Violín** muestra la densidad de la distribución de precios. La parte más ancha '
+        f'indica dónde se concentran la mayoría de los precios, y la línea central es el Diagrama de Caja, '
+        f'mostrando la mediana (línea central) y cuartiles. Esto permite una mejor comprensión de cómo se '
+        f'distribuyen los precios para {manufacturer_1.upper()} y {manufacturer_2.upper()}.'
     )
 elif manufacturer_1 == manufacturer_2:
     st.warning(
